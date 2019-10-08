@@ -1,0 +1,30 @@
+{% extends 'myapp/layout.html' %}
+{% block content %}
+<style>
+
+.button {
+    background: #007bff;
+    border: 0;
+    border-radius: 20px;
+    padding: 8px 30px;
+    color: #fff;
+    transition: 0.3s;
+  }
+
+  button:hover{
+    background-color: #3575ce;
+  }
+</style>
+<br><br><br>
+<div class="container-login100-form-btn m-t-20" align="center">
+    <button class="button" type="submit" value="submit">
+        <a href="{% url 'addclient' %}">Add Client</a>
+    </button>
+
+    
+<br><br><br>
+    <div class="container-login100-form-btn m-t-20" align="center">
+        <button class="button" type="submit" value="submit">
+            <a href="{% url 'showclient' %}">Show Client</a>
+        </button>
+{% endblock %}
