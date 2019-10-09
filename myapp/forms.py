@@ -15,3 +15,4 @@ class ClientForm(forms.ModelForm):
         fields = ['client_name','address_street_name','suburb','postcode','state','contact_name','email_address','phone_number']
 
     
+
