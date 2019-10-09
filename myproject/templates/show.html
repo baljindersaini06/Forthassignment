@@ -92,7 +92,7 @@
                     {% for client in object_list %}
                     <td>{{ client.id }}</td>
                     <td>{{ client.client_name }}</td>
-                    <td>{{ client.address_street_name }} {{ a.suburb }} {{ a.postcode }} {{ a.state }}</td>
+                    <td>{{ client.address_street_name }} {{ client.suburb }} {{ client.postcode }} {{ client.state }}</td>
                     <td>{{ client.contact_name }}</td>
                     <td>{{ client.email_address }}</td>
                     <td>{{ client.phone_number }}</td>

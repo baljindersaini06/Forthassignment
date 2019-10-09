@@ -46,9 +46,9 @@ def edit_client(request):
     else:
         form = ClientForm(instance=request.user)
         args['form'] = form
-        return render(request, 'myapp/edit_campaign.html', args)
+        return render(request, 'myapp/edit_client.html', args)
 
-def client_update(request, pk, template_name='myapp/edit_campaign.html'):
+def client_update(request, pk, template_name='myapp/edit_client.html'):
     client= get_object_or_404(Client, pk=pk)
     form = ClientForm(request.POST or None, instance=client)
     if form.is_valid():
@@ -98,5 +98,4 @@ class ViewClient(ListView):
 
 
 def home(request):
-    # send_email()
     return render(request, 'home.html')
