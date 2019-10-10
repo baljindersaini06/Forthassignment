@@ -17,25 +17,6 @@ def create_client(request):
     return render(request, 'myapp/client_form.html', {'form': form})
 
 
-# def show(request):
-#     object_list = Client.objects.all().order_by('client_name', 'email_address', 'phone_number', 'suburb')
-#     return render(request, 'show.html', {'object_list': object_list})
-
-
-def edit_client(request):
-    args = {}
-    if request.method == "POST":
-        form = ClientForm(data=request.POST, instance=request.user)
-        if form.is_valid():
-            client = form.save(commit=False)
-            client.save()
-            return HttpResponseRedirect(reverse('showclient'))
-    else:
-        form = ClientForm(instance=request.user)
-        args['form'] = form
-        return render(request, 'myapp/edit_client.html', args)
-
-
 def client_update(request, pk, template_name='myapp/edit_client.html'):
     client= get_object_or_404(Client, pk=pk)
     form = ClientForm(request.POST or None, instance=client)
@@ -63,26 +44,46 @@ def delete(request, pk):
     return HttpResponseRedirect(reverse('showclient'))
 
 
-class ShowClient(ListView):
-    model = Client
-    template_name = 'show.html'
+def sort(request):
+    orderBy = request.GET.get('order_by')
+    direction = 'desc'
+    if request.GET.get('direction'):
+        direction = request.GET.get('direction')
+        if direction == 'desc':
+            orderBy = "-" + orderBy   
+            direction = 'asc'
+        elif direction == 'asc':
+            orderBy = orderBy   
+            direction = 'desc'
 
-    def get_queryset(self):
-        orderBy = self.request.GET.get('order_by')
-        self.direction = 'desc'
-        if self.request.GET.get('direction'):
-            direction = self.request.GET.get('direction')
-            if direction == 'desc':
-                orderBy = "-" + orderBy   
-                self.direction = 'asc'
-                
+    if orderBy is None:
+        object_list = Client.objects.all().order_by('id')
+        return render(request, 'show.html', {'object_list': object_list})
+
+    else:
+        object_list = Client.objects.all().order_by(orderBy)
+        return render(request, 'show.html', {"object_list": object_list, "direction": direction})
+
+
+# class ShowClient(ListView):
+#     model = Client
+#     template_name = 'show.html'
+
+#     def get_queryset(self):
+#         orderBy = self.request.GET.get('order_by')
+#         self.direction = 'desc'
+#         if self.request.GET.get('direction'):
+#             direction = self.request.GET.get('direction')
+#             if direction == 'desc':
+#                 orderBy = "-" + orderBy   
+#                 self.direction = 'asc'
         
-        if orderBy is None:
-            return Client.objects.all().order_by('id')
-        else:
-            return Client.objects.all().order_by(orderBy)
+#         if orderBy is None:
+#             return Client.objects.all().order_by('client_name')
+#         else:
+#             return Client.objects.all().order_by(orderBy)
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['direction'] = self.direction
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['direction'] = self.direction
+#         return context
